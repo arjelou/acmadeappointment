@@ -1,3 +1,54 @@
 body{
   font-family: verdana;
 }
+form{
+  border-bottom: solid 1px rgb(216, 216, 216);
+  padding: 20px;
+  margin-top: -8px;
+  margin-bottom: 10px;
+}
+ul{
+  list-style-type: none;
+}
+li{
+  border-bottom: solid 1px rgb(216, 216, 216);
+  margin-top: 20px;
+}
+div.apptList{
+  display: grid;
+  grid-template-columns: repeat(6, .25fr);
+  grid-template-rows: repeat(4, .25fr);
+}
+div.apptList button{
+  grid-column: 5 / -1;
+  grid-row: 1;
+  border: none;
+  background-color: transparent;
+}
+div.apptList h4{
+  grid-column: span 3;
+  grid-row: 1;
+}
+div.apptList h6{
+  grid-column: span 3;
+  grid-row: 2;
+}
+div.apptList p{
+  grid-column: span 6;
+  grid-row: 3;
+}
+div.apptList span{
+  grid-column: 5 / -1;
+  grid-row: 2;
+}
+.search input[type="search"]{
+ border-top-right-radius: 0px;
+ border-bottom-right-radius: 0px;
+}
+.search button{
+  border-top-left-radius: 0px;
+ border-bottom-left-radius: 0px;
+}
+.search{
+  display: flex;
+}
