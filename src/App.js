@@ -32,12 +32,13 @@ function App() {
 // },[])
 //TO CREATE A SNAPSHOOT TO THE NEW DATA ADD
 const getMovieList = async () =>{
-    try{
+
+      try{
         const data = await getDocs(movieCollectionRef);
         const filteredData = data.docs.map((doc) => ({...doc.data(), id: doc.id}));
         setMovieList(filteredData);
         console.log('Filter Data:',filteredData);
-        console.log('Current User:', auth?.currentUser?.uid);
+        console.log('Current User:', auth?.currentUser?.email);
     }catch(err){
         console.error(err);
     }
@@ -45,7 +46,6 @@ const getMovieList = async () =>{
 
 useEffect(() =>{
     getMovieList();
-
 },[]);
 // useEffect(() =>{
 //   fetchData()
@@ -53,14 +53,18 @@ useEffect(() =>{
 
 //add new movie function
 const addNewMovie = async () =>{
+  try{  
     await addDoc(movieCollectionRef,{
-        title: NewMovie,
-        releaseDate: newreleaseDate,
-        haveOscar: isOscar,
-        userId: auth?.currentUser?.uid
-    });
-
-    getMovieList();
+          title: NewMovie,
+          releaseDate: newreleaseDate,
+          haveOscar: isOscar,
+          userId: auth?.currentUser?.uid,
+      });
+  
+      getMovieList();
+    }catch(err){
+      console.error(err);
+    }
 };
 
 //DELETE MOVIE
@@ -73,10 +77,14 @@ const updateTitlename = async (id) =>{
   const updateMovieDoc = doc(db, 'movies', id);
   await updateDoc(updateMovieDoc, {title: updateTitle});
 }
+const userAvatar = auth?.currentUser?.photoURL;
+const userEmail = auth?.currentUser?.email;
 
   return (
     <div className="container">
     <div>
+    <img src={userAvatar} alt='aaa'/>
+    <p>{userEmail}</p>
         < Auth />
     </div>
     {/* form for new movie add */}
