@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import { FaCalendarAlt,FaTrashAlt } from 'react-icons/fa';
 import Auth from './component/Auth';
-import { db } from './config/firebase';
-import { getDocs, collection, addDoc, deleteDoc, doc } from 'firebase/firestore';
+import { db, auth } from './config/firebase';
+import { getDocs, collection, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 
 function App() {
 //   let [appointmentList, setAppointmentList] = useState([]);
@@ -18,6 +18,9 @@ function App() {
   const [newreleaseDate, setReleaseDate] = useState(0);
   const [isOscar, setIsOscar] = useState(false);
 
+  //UPDATE MOVIE TITLE
+  const [updateTitle, setUpdateTitle] = useState('');
+
   const movieCollectionRef = collection(db, "movies")
 
 // const fetchData = useCallback( () => {
@@ -27,14 +30,14 @@ function App() {
 //     setAppointmentList(data)
 //   });
 // },[])
-
 //TO CREATE A SNAPSHOOT TO THE NEW DATA ADD
 const getMovieList = async () =>{
     try{
         const data = await getDocs(movieCollectionRef);
         const filteredData = data.docs.map((doc) => ({...doc.data(), id: doc.id}));
         setMovieList(filteredData);
-        console.log(filteredData);
+        console.log('Filter Data:',filteredData);
+        console.log('Current User:', auth?.currentUser?.uid);
     }catch(err){
         console.error(err);
     }
@@ -43,7 +46,7 @@ const getMovieList = async () =>{
 useEffect(() =>{
     getMovieList();
 
-});
+},[]);
 // useEffect(() =>{
 //   fetchData()
 // },[fetchData]);
@@ -53,7 +56,8 @@ const addNewMovie = async () =>{
     await addDoc(movieCollectionRef,{
         title: NewMovie,
         releaseDate: newreleaseDate,
-        haveOscar: isOscar
+        haveOscar: isOscar,
+        userId: auth?.currentUser?.uid
     });
 
     getMovieList();
@@ -64,6 +68,11 @@ const deleteMovie = async (id) =>{
     const deleteMovieDoc = doc(db, 'movies', id);
     await deleteDoc(deleteMovieDoc);
 }
+//UPDATE TITLE MOVIE
+const updateTitlename = async (id) =>{
+  const updateMovieDoc = doc(db, 'movies', id);
+  await updateDoc(updateMovieDoc, {title: updateTitle});
+}
 
   return (
     <div className="container">
@@ -72,23 +81,23 @@ const deleteMovie = async (id) =>{
     </div>
     {/* form for new movie add */}
     <div>
-        <div class="mb-3">
-        <input type="text" class="form-control" placeholder="Movie Title" 
+        <div className="mb-3">
+        <input type="text" className="form-control" placeholder="Movie Title" 
             onChange={(e) => setNewMovie(e.target.value)}
         />
         </div>
-        <div class="mb-3">
-        <input type="number" class="form-control" placeholder="Release Date" 
+        <div className="mb-3">
+        <input type="number" className="form-control" placeholder="Release Date" 
             onChange={(e) => setReleaseDate(Number(e.target.value))}
         />
         </div>
-        <div class="mb-3">
+        <div className="mb-3">
         <label>Have Oscar :</label>
         <input type="checkbox" checked={isOscar}
             onChange={(e) => setIsOscar(e.target.value)}
         />
         </div>
-        <div class="mb-3">
+        <div className="mb-3">
         <button onClick={addNewMovie} className='btn btn-primary'>Save</button>
         </div>
     </div>
@@ -133,6 +142,10 @@ const deleteMovie = async (id) =>{
                 <button onClick={() => deleteMovie(movie.id)}><FaTrashAlt color='red' size={25}/></button>
                 <h3 style={{color: movie.haveOscar ? 'yellow' : 'red'}}>{movie.title}</h3>
                 <p>Release Date: {movie.releaseDate}</p>
+                <div>
+                  <input type="text" name="updateTitleName" placeholder='Update Titile Name...' onChange={(e) =>setUpdateTitle(e.target.value)}/>
+                  <button onClick={() => updateTitlename(movie.id)}>Update</button>
+                </div>
             </div>
 
         )  
