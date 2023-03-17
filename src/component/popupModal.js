@@ -10,6 +10,7 @@ export default function popupModal() {
         try{
             await signInWithPopup(auth,googleProvider)
             alert('Sigin Successfuly!')
+            window.location ='/u';
         }catch(err){
             console.error(err);
         }

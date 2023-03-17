@@ -14,7 +14,6 @@ export default function navbar() {
     try{
         await signOut(auth)
         alert('Sginout Successfuly!')
-        window.location = '/';
     }catch(err){
         console.error(err);
     }
@@ -34,21 +33,8 @@ export default function navbar() {
           </li>
         </ul>
         <form className="d-flex gap-3" role="search">
-        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-          <li className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src={Avatar} className='userProfile'/>
-            </a>
-            <ul className="dropdown-menu">
-              <li><a className="dropdown-item" href="#">Profile</a></li>
-              <li><a className="dropdown-item" href="#">Settings</a></li>
-              <li><hr className="dropdown-divider" /></li>
-              <li><a className="dropdown-item" href="#" onClick={singInOut}>Sign out</a></li>
-            </ul>
-          </li>
-        </ul>
-          {/* <button className="btn btn-success"type="submit">Sign up</button> */}
-          {/* <PopupModal /> */}
+          <button className="btn btn-success"type="submit">Sign up</button>
+          <PopupModal />
         </form>
       </div>
     </div>

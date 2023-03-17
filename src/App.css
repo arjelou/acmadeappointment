@@ -1,75 +1,33 @@
-body{
-  font-family: verdana;
-}
-form{
-  border-bottom: solid 1px rgb(216, 216, 216);
-  padding: 20px;
-  margin-top: -8px;
-  margin-bottom: 10px;
-}
-ul{
-  list-style-type: none;
-}
-li{
-  border-bottom: solid 1px rgb(216, 216, 216);
-  margin-top: 20px;
-}
-div.apptList{
-  display: grid;
-  grid-template-columns: repeat(6, .25fr);
-  grid-template-rows: repeat(4, .25fr);
-}
-div.apptList button{
-  grid-column: 5 / -1;
-  grid-row: 1;
-  border: none;
-  background-color: transparent;
-}
-div.apptList h4{
-  grid-column: span 3;
-  grid-row: 1;
-}
-div.apptList h6{
-  grid-column: span 3;
-  grid-row: 2;
-}
-div.apptList p{
-  grid-column: span 6;
-  grid-row: 3;
-}
-div.apptList span{
-  grid-column: 5 / -1;
-  grid-row: 2;
-}
-.search input[type="search"]{
- border-top-right-radius: 0px;
- border-bottom-right-radius: 0px;
-}
-.search button{
-  border-top-left-radius: 0px;
- border-bottom-left-radius: 0px;
-}
-.search{
-  display: flex;
-}
 /* FOR MAIN CONTENT */
 /* MOBILE DESIGN */
 div.main-content{
   display: grid;
+  grid-template-columns: 10px 1fr 10px;
   margin-top: 35px;
 }
 textarea{
   height: 110px;
 }
 div.btn_add_search{
+  grid-column: span 3;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
   margin-bottom: 20px;
 }
+ul{
+  grid-column: span 3;
+}
 div.toggleform{
-  border-bottom: solid 1px  rgba(214, 210, 210, 0.322); 
+  border-radius: 5px;
+  background-color: rgb(240, 236, 236); 
+  width: 370px;
+  padding: 10px;
+  margin: 40px auto;
+  position:absolute;
+  grid-column: span 3;
+  box-shadow: 3px 5px 15px rgba(214, 210, 210, 0.671); 
   margin-bottom: 20px;
 }
 div.toggleform button{
@@ -110,12 +68,49 @@ div.listOfSchedule_icons{
 }
 .icon_delete:hover{
  color: orangered;
+ cursor: pointer;
 }
 .icon_edit:hover{
   color: orange;
+  cursor: pointer;
 }
 .icon_calendar{
   color: gray;
   width: 20px;
   height: 20px;
+}
+@media screen and (min-width: 768px){
+  div.main-content{
+    display: grid;
+    grid-template-columns: 1fr .10fr 1fr;
+    grid-template-rows: .10fr 1fr;
+  }
+  ul{
+    grid-column: 3 / -1;
+    grid-row: span 3;
+  }
+  div.btn_add_search{
+    grid-column: 1 / 2;
+  }
+  div.toggleform{
+    border-radius: 5px;
+    background-color: rgb(240, 236, 236); 
+    width: 370px;
+    padding: 10px;
+    margin: 70px auto;
+    grid-column: span 3;
+    box-shadow: 3px 5px 15px rgba(214, 210, 210, 0.671); 
+    margin-bottom: 20px;
+  }
+  .icon_delete, .icon_edit{
+    width: 20px;
+    height: 20px;
+  }
+  .userProfile{
+    background-color: rgba(128, 128, 128, 0.404);
+    width: 40px;
+    height: 40px;
+    border: solid 2px orangered ;
+    border-radius: 50%;
+  }
 }
