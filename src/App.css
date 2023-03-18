@@ -38,7 +38,7 @@ div.toggleform button{
 div.listOfSchedule{
   display: grid;
   grid-template-columns: repeat(10, .50fr);
-  grid-template-rows: repeat(4, .15fr);
+  grid-template-rows: repeat(5, .15fr);
   margin-bottom: 20px;
   box-shadow: 3px 5px 15px rgba(214, 210, 210, 0.671); 
   padding: 11px;
@@ -57,9 +57,21 @@ div.listOfSchedule p{
   justify-content: start;
   gap: 5px;
 }
+div.listOfSchedule a{
+  grid-column: span 5;
+  grid-row: 4;
+  text-decoration: none;
+  background-color: blue;
+  text-align: center;
+  color: white;
+  font-weight: 700;
+  padding: 2px;
+  border-radius: 4px;
+  cursor: pointer;
+}
 div.listOfSchedule span{
   grid-column: span 10;
-  grid-row: 4;
+  grid-row: 5;
 }
 div.listOfSchedule_icons{
   display: flex;

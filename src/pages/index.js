@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import '../App.css';
 import Navbar from '../component/navmain';
 import { FaRegCalendarAlt, FaTrashAlt, FaPencilAlt, FaPlus } from 'react-icons/fa';
@@ -8,6 +10,11 @@ import { db, auth } from '../config/firebase';
 import { getDocs, collection, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 
 function Index() {
+
+//Notifications alerts
+const addMeeting = () => toast.success('New scheduled was added');
+const deleteMeeting = () => toast.warning('Schedule was deleted!');
+
 //   let [appointmentList, setAppointmentList] = useState([]);
   let [toggleForm, setToggleForm] = useState(false);
 
@@ -18,6 +25,7 @@ function Index() {
   const [newTopic, setNewTopic] = useState('');
   const [newDateTime, setDateTime] = useState(0);
   const [newNote, setNote] = useState('');
+  const [meetingLink,setMeetingLink] = useState('');
 
   //UPDATE MOVIE TITLE
   const [updateTitle, setUpdateTitle] = useState('');
@@ -47,10 +55,11 @@ const addNewMovie = async () =>{
           title: newTopic,
           schDate: newDateTime,
           schNote: newNote,
+          meetingLink: meetingLink,
           userId: auth?.currentUser?.uid,
       });
-  
       getMovieList();
+      addMeeting();
     }catch(err){
       console.error(err);
     }
@@ -62,6 +71,7 @@ const deleteMovie = async (id) =>{
     try{
     await deleteDoc(deleteMovieDoc);
     getMovieList();
+    deleteMeeting();
     }catch(err){
       console.error(err);
     }
@@ -76,11 +86,20 @@ const updateTitlename = async (id) =>{
     console.error(err);
   }
 }
-const userAvatar = auth?.currentUser?.photoURL;
-const userEmail = auth?.currentUser?.email;
-
   return (
     <>
+    <ToastContainer 
+      position="top-center"
+      autoClose={3000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
+    />
       <div className='container'>
         <Navbar />
       </div>
@@ -103,7 +122,7 @@ const userEmail = auth?.currentUser?.email;
         <div className='toggleform'>
             <div className="mb-3">
               <label>Topic</label>
-              <input type="text" className="form-control" placeholder="..." 
+              <input type="text" className="form-control" placeholder="Meeting Title" 
                   onChange={(e) => setNewTopic(e.target.value)}
               />
             </div>
@@ -112,6 +131,14 @@ const userEmail = auth?.currentUser?.email;
                 <div className='date_time'>
                   <input type="datetime-local" className="form-control" placeholder="..." 
                   onChange={(e) => setDateTime(e.target.value)}
+                  />                                             
+                </div>
+            </div>
+            <div className="mb-3">
+              <label>Meeting Link</label>
+                <div className='date_time'>
+                  <input type="url" className="form-control" placeholder="Please enter the lik for Zoom | Google Meet" 
+                  onChange={(e) => setMeetingLink(e.target.value)}
                   />                                             
                 </div>
             </div>
@@ -136,7 +163,8 @@ const userEmail = auth?.currentUser?.email;
                     <FaPencilAlt title='Edit Note' className='icon_edit'/>
                   </div>
                 <h3>{movie.title}</h3>
-                <p><FaRegCalendarAlt className='icon_calendar'/> {movie.schDate.toString()}</p>
+                <p><FaRegCalendarAlt className='icon_calendar'/> {movie.schDate}</p>
+                <a href={movie.meetingLink} style={{color: movie.meetingLink === '' ? 'orange' : 'white'}}>{movie.meetingLink === '' ? 'No link available' : 'Meeting Link'}</a>
                 <span><strong>Note:</strong> {movie.schNote}</span>
                 {/* <div>
                   <input type="text" name="updateTitleName" placeholder='Update Titile Name...' onChange={(e) =>setUpdateTitle(e.target.value)}/>
